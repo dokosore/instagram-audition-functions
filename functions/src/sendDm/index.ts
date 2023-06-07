@@ -4,6 +4,8 @@
 
 import { google } from 'googleapis';
 
+import { sendSlack } from '../slack';
+
 const spreadsheetId = '1j_vaMXhNqEPHxG6_rmbQFnkZQfeeV9pHwXcmiCG9a5Y';
 
 export const sendDmByAccount = async (accountNum: number): Promise<boolean> => {
@@ -38,6 +40,7 @@ export const sendDmByAccount = async (accountNum: number): Promise<boolean> => {
     return false;
   }
 
+  await sendSlack(`アカウント ${account.userName} でDMを送信しました`);
   return true;
 };
 

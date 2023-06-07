@@ -4,10 +4,10 @@
     "lint": "eslint --ext .js,.ts .",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "serve": "npm run build && firebase emulators:start --only functions",
+    "serve": "npm run build && firebase emulators:start",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
+    "deploy": "npm run build && firebase deploy",
     "logs": "firebase functions:log"
   },
   "engines": {
@@ -15,6 +15,7 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@slack/webhook": "^6.1.0",
     "axios": "^1.4.0",
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.18.0",

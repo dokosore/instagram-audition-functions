@@ -10,7 +10,7 @@ export const searchByHashtagApi = searchByHashtag;
 
 export const cronTest = functions
   .region('asia-northeast1')
-  .pubsub.schedule('every 1 minutes')
+  .pubsub.schedule('every 1 hours')
   .timeZone('Asia/Tokyo')
   .onRun(async () => {
     await sendSlack('Function稼働中');

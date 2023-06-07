@@ -14,6 +14,7 @@ export const cronTest = functions
   .timeZone('Asia/Tokyo')
   .onRun(async () => {
     await sendSlack('Function稼働中');
+    console.log('Function稼働中');
     return;
   });
 
@@ -23,6 +24,7 @@ export const sendDm0 = functions
   .timeZone('Asia/Tokyo')
   .onRun(async () => {
     await sendDmByAccount(0);
+    console.log('Function稼働中');
     return;
   });
 
@@ -32,6 +34,7 @@ export const sendDm1 = functions
   .timeZone('Asia/Tokyo')
   .onRun(async () => {
     await sendDmByAccount(1);
+    console.log('Function稼働中');
     return;
   });
 
@@ -41,6 +44,7 @@ export const sendDm2 = functions
   .timeZone('Asia/Tokyo')
   .onRun(async () => {
     await sendDmByAccount(2);
+    console.log('Function稼働中');
     return;
   });
 
@@ -50,5 +54,6 @@ export const sendDm3 = functions
   .timeZone('Asia/Tokyo')
   .onRun(async () => {
     await sendDmByAccount(3);
+    console.log('Function稼働中');
     return;
   });

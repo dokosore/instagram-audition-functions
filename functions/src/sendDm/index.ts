@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
 import { google } from 'googleapis';
+import fetch from 'node-fetch';
 
 import { sendSlack } from '../slack';
 
@@ -12,11 +13,13 @@ export const sendDmByAccount = async (accountNum: number): Promise<boolean> => {
   const account = await getAccounts(accountNum);
   if (!account) {
     console.error('アカウントが見つかりませんでした');
+    await sendSlack('アカウントが見つかりませんでした');
     return false;
   }
   const targetUserId = await getTargetUserId();
   if (!targetUserId) {
     console.error('ターゲットユーザーが見つかりませんでした');
+    await sendSlack('ターゲットユーザーが見つかりませんでした');
     return false;
   }
 
@@ -34,13 +37,21 @@ export const sendDmByAccount = async (accountNum: number): Promise<boolean> => {
     },
     body: JSON.stringify(data),
   };
-  const response = await fetch(url, options);
-  if (!response.ok) {
-    console.error('DMの送信に失敗しました');
-    return false;
+
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      console.error('DMの送信時にエラーが発生しました');
+      await sendSlack('DMの送信時にエラーが発生しました');
+      return false;
+    }
+    await sendSlack(`アカウント ${account.userName} でDMを送信しました`);
+  } catch (e) {
+    const error = e as any;
+    const message: string = error.message || 'エラーが発生しました';
+    await sendSlack(`DMの送信に失敗しました ${message}`);
   }
 
-  await sendSlack(`アカウント ${account.userName} でDMを送信しました`);
   return true;
 };
 

@@ -1,27 +1,33 @@
 import * as functions from 'firebase-functions';
 
-import { helloWorld } from './helloWorld';
 import { searchByHashtag } from './search';
 import { sendDmByAccount } from './sendDm';
 import { localSendDmTest } from './test';
 
-export const helloWorldApi = helloWorld;
-export const searchByHashtagApi = searchByHashtag;
 export const localSendDmTestApi = localSendDmTest;
 
-// export const cronTest = functions
+export const searchTargetUserApi = functions.region('asia-northeast1').https.onRequest(async (req, res) => {
+  try {
+    await searchByHashtag(0, 'フリーモデル', 10);
+    res.send('Success');
+  } catch (e) {
+    res.send('Error');
+  }
+});
+
+// export const searchTargetUser = functions
 //   .region('asia-northeast1')
-//   .pubsub.schedule('every 1 hours')
+//   .pubsub.schedule('0 6 * * *')
 //   .timeZone('Asia/Tokyo')
 //   .onRun(async () => {
-//     await sendSlack('Function稼働中');
+//     await searchByHashtag();
 //     functions.logger.info('Function稼働中');
 //     return;
 //   });
 
 export const sendDm0 = functions
   .region('asia-northeast1')
-  .pubsub.schedule('every 1 hours')
+  .pubsub.schedule('0 * * * *')
   .timeZone('Asia/Tokyo')
   .onRun(async () => {
     await sendDmByAccount(0);
@@ -31,7 +37,7 @@ export const sendDm0 = functions
 
 export const sendDm1 = functions
   .region('asia-northeast1')
-  .pubsub.schedule('every 1 hours')
+  .pubsub.schedule('5 * * * *')
   .timeZone('Asia/Tokyo')
   .onRun(async () => {
     await sendDmByAccount(1);
@@ -41,7 +47,7 @@ export const sendDm1 = functions
 
 export const sendDm2 = functions
   .region('asia-northeast1')
-  .pubsub.schedule('every 1 hours')
+  .pubsub.schedule('10 * * * *')
   .timeZone('Asia/Tokyo')
   .onRun(async () => {
     await sendDmByAccount(2);
@@ -51,7 +57,7 @@ export const sendDm2 = functions
 
 export const sendDm3 = functions
   .region('asia-northeast1')
-  .pubsub.schedule('every 1 hours')
+  .pubsub.schedule('15 * * * *')
   .timeZone('Asia/Tokyo')
   .onRun(async () => {
     await sendDmByAccount(3);

@@ -2,32 +2,37 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
-import * as functions from 'firebase-functions';
-import { google } from 'googleapis';
+import { getAllTargetUserList } from '../common/getAllTargetUserList';
+import { recordTargetUserList } from '../common/recordTargetUserList';
+import { sendSlack } from '../common/sendSlack';
+import { TargetUser, fetchTargetUsers } from './fetchTargetUsers';
 
-const spreadsheetId = '1j_vaMXhNqEPHxG6_rmbQFnkZQfeeV9pHwXcmiCG9a5Y';
+export const searchByHashtag = async (accountNum: number, hashtag: string, limit: number): Promise<boolean> => {
+  try {
+    // ハッシュタグをもとに、ターゲットユーザーを検索する
+    const targetUserList: TargetUser[] = await fetchTargetUsers(accountNum, hashtag, limit);
 
-export const searchByHashtag = functions.region('asia-northeast1').https.onRequest(async (req, res) => {
-  await search();
-  res.send('Hello from Firebase!');
-});
+    // スプレッドシートからターゲットユーザーのリストを取得する
+    const allTargetUserList: TargetUser[] = await getAllTargetUserList();
 
-const search = async () => {
-  const auth = await google.auth.getClient({
-    keyFile: './instagram-audition-bot-ab9d031cc339.json',
-    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-  });
+    // 重複がないリストを作成
+    const _allTargetUserIdList: number[] = allTargetUserList.map((item) => item.userId);
+    const unDuplicationTargetUserList: TargetUser[] = targetUserList.filter(
+      (targetUser) => !_allTargetUserIdList.includes(targetUser.userId),
+    );
 
-  const range = 'ユーザーリスト';
-  const apiOptions = {
-    auth,
-    spreadsheetId,
-    range,
-  };
+    // ターゲットユーザーをスプレッドシートに追加する
+    await recordTargetUserList(unDuplicationTargetUserList, hashtag);
 
-  const sheets = google.sheets('v4');
-  sheets.spreadsheets.values.get(apiOptions, (err: any, res: any) => {
-    console.log(err);
-    console.log(res.data.values);
-  });
+    // 全て完了すれば、Slackに通知する
+    await sendSlack(
+      `ハッシュタグ「#${hashtag}」を用いて、${unDuplicationTargetUserList.length}件のユーザーを追加しました`,
+    );
+    return true;
+  } catch (e) {
+    const error = e as any;
+    const message: string = error.message || 'エラーが発生しました';
+    await sendSlack(`ハッシュタグ検索時にエラーが発生しました ${message}`);
+    return false;
+  }
 };

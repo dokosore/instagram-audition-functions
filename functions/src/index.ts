@@ -15,15 +15,15 @@ export const searchTargetUserApi = functions.region('asia-northeast1').https.onR
   }
 });
 
-// export const searchTargetUser = functions
-//   .region('asia-northeast1')
-//   .pubsub.schedule('0 6 * * *')
-//   .timeZone('Asia/Tokyo')
-//   .onRun(async () => {
-//     await searchByHashtag();
-//     functions.logger.info('Function稼働中');
-//     return;
-//   });
+export const searchTargetUser = functions
+  .region('asia-northeast1')
+  .pubsub.schedule('0 6 * * *')
+  .timeZone('Asia/Tokyo')
+  .onRun(async () => {
+    await searchByHashtag(0, 'フリーモデル', 10);
+    functions.logger.info('Function稼働中');
+    return;
+  });
 
 export const sendDm0 = functions
   .region('asia-northeast1')

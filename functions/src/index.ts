@@ -64,3 +64,13 @@ export const sendDm3 = functions
     functions.logger.info('Function稼働中');
     return;
   });
+
+export const sendDm4 = functions
+  .region('asia-northeast1')
+  .pubsub.schedule('20 * * * *')
+  .timeZone('Asia/Tokyo')
+  .onRun(async () => {
+    await sendDmByAccount(4);
+    functions.logger.info('Function稼働中');
+    return;
+  });

@@ -6,6 +6,8 @@ import * as slack from '@slack/webhook';
 import { Settings, getSettings } from './getSettings';
 
 export const sendSlack = async (message: string) => {
+  console.log('開発中メッセージ', message);
+
   const settings: Settings = await getSettings();
   if (!settings.slackNotification) return;
   const webhookUrl = 'https://hooks.slack.com/services/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';

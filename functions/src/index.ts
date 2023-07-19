@@ -2,38 +2,44 @@ import * as functions from 'firebase-functions';
 
 import { searchByHashtag } from './search';
 import { sendDmByAccount } from './sendDm';
-import { localSendDmTest } from './test';
 
-export const localSendDmTestApi = localSendDmTest;
+// export const localSendDmTestApi = localSendDmTest;
 
-export const searchTargetUserApi = functions.region('asia-northeast1').https.onRequest(async (req, res) => {
-  try {
-    await searchByHashtag(0, 'フリーモデル', 10);
-    res.send('Success');
-  } catch (e) {
-    res.send('Error');
-  }
-});
+// export const searchTargetUserApi = functions
+//   .runWith({
+//     timeoutSeconds: 500,
+//     memory: '2GB',
+//   })
+//   .region('asia-northeast1')
+//   .https.onRequest(async (req, res) => {
+//     try {
+//       await searchByHashtag(0, 'アイドル志望', 100);
+//       res.send('Success');
+//     } catch (e) {
+//       res.send('Error');
+//     }
+//   });
 
 export const searchTargetUser = functions
   .region('asia-northeast1')
-  .pubsub.schedule('0 6 * * *')
+  // .pubsub.schedule('0 6 * * *')
+  .pubsub.schedule('30 * * * *')
   .timeZone('Asia/Tokyo')
   .onRun(async () => {
-    await searchByHashtag(0, 'フリーモデル', 10);
+    await searchByHashtag(0, 'フリーモデル', 100);
     functions.logger.info('Function稼働中');
     return;
   });
 
-export const sendDm0 = functions
-  .region('asia-northeast1')
-  .pubsub.schedule('0 * * * *')
-  .timeZone('Asia/Tokyo')
-  .onRun(async () => {
-    await sendDmByAccount(0);
-    functions.logger.info('Function稼働中');
-    return;
-  });
+// export const sendDm0 = functions
+//   .region('asia-northeast1')
+//   .pubsub.schedule('0 * * * *')
+//   .timeZone('Asia/Tokyo')
+//   .onRun(async () => {
+//     await sendDmByAccount(0);
+//     functions.logger.info('Function稼働中');
+//     return;
+//   });
 
 export const sendDm1 = functions
   .region('asia-northeast1')
@@ -65,12 +71,12 @@ export const sendDm3 = functions
     return;
   });
 
-export const sendDm4 = functions
-  .region('asia-northeast1')
-  .pubsub.schedule('20 * * * *')
-  .timeZone('Asia/Tokyo')
-  .onRun(async () => {
-    await sendDmByAccount(4);
-    functions.logger.info('Function稼働中');
-    return;
-  });
+// export const sendDm4 = functions
+//   .region('asia-northeast1')
+//   .pubsub.schedule('20 * * * *')
+//   .timeZone('Asia/Tokyo')
+//   .onRun(async () => {
+//     await sendDmByAccount(4);
+//     functions.logger.info('Function稼働中');
+//     return;
+//   });

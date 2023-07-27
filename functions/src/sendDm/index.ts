@@ -38,7 +38,8 @@ export const sendDmByAccount = async (accountNum: number): Promise<boolean> => {
   try {
     const response = await fetch(SEND_DM_API_URL, options);
     if (!response.ok) {
-      await sendSlack('DMの送信時にエラーが発生しました');
+      const message = await response.text();
+      await sendSlack(`DMの送信時にエラーが発生しました ${message}`);
       return false;
     }
     await sendSlack(`アカウント ${account.userName} でDMを送信しました`);

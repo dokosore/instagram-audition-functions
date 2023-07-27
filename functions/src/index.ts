@@ -2,8 +2,9 @@ import * as functions from 'firebase-functions';
 
 import { searchByHashtag } from './search';
 import { sendDmByAccount } from './sendDm';
+import { localSendDmTest } from './test';
 
-// export const localSendDmTestApi = localSendDmTest;
+export const localSendDmTestApi = localSendDmTest;
 
 // export const searchTargetUserApi = functions
 //   .runWith({
@@ -22,8 +23,8 @@ import { sendDmByAccount } from './sendDm';
 
 export const searchTargetUser = functions
   .region('asia-northeast1')
-  // .pubsub.schedule('0 6 * * *')
-  .pubsub.schedule('30 * * * *')
+  .pubsub.schedule('0 6 * * *')
+  // .pubsub.schedule('30 * * * *')
   .timeZone('Asia/Tokyo')
   .onRun(async () => {
     await searchByHashtag(0, 'フリーモデル', 100);

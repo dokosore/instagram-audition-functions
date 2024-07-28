@@ -28,7 +28,7 @@ export const searchTargetUser = functions
   // .pubsub.schedule('30 * * * *')
   .timeZone('Asia/Tokyo')
   .onRun(async () => {
-    await searchByHashtag(0, 'フリーモデル', 100); // 条件表のアカウントリストのステータス「運用中」の上から1番目
+    await searchByHashtag(0, '美味しそうなパスタ飯', 1); // 条件表のアカウントリストのステータス「運用中」の上から1番目
     functions.logger.info('Function稼働中');
     return;
   });

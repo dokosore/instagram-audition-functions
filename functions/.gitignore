@@ -7,3 +7,6 @@ typings/
 
 # Node.js dependency directory
 node_modules/
+
+# 秘密鍵を含むJSONファイル
+instagram-audition-bot-ebdaa0ae8811.json

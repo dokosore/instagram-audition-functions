@@ -8,7 +8,7 @@ import { SPREADSHEET_ID } from '../const';
 
 export const getTargetUserId = async (): Promise<number | null> => {
   const auth = await google.auth.getClient({
-    keyFile: './instagram-audition-bot-ab9d031cc339.json',
+    keyFile: './instagram-audition-bot-ebdaa0ae8811.json',
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
   });
 

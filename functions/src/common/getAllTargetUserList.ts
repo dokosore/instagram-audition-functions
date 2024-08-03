@@ -9,7 +9,7 @@ import { TargetUser } from '../search/fetchTargetUsers';
 
 export const getAllTargetUserList = async (): Promise<TargetUser[]> => {
   const auth = await google.auth.getClient({
-    keyFile: './instagram-audition-bot-ab9d031cc339.json',
+    keyFile: './instagram-audition-bot-ebdaa0ae8811.json',
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
   });
 
